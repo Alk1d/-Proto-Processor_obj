@@ -9,7 +9,6 @@
 int main(int argc, char *argv[])
 {
     QTextStream cin(stdin);
-    // program main menu, change into a function later
     int mode = 0;
 
     while( mode != 3)
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
                 {
                     QTextStream out(&objFile);
                     out << "o " << model_name << "\n";
-                    // writing loop in a file, need to add "f" (polygons) writing and "l" (lines)
+                    // writing vertices, lines and polygons
                     for (int i = 0; i < cube_vertices.size(); ++i)
                     {
                         QString vertice_x_string = QString::number(cube_vertices[i].x);
@@ -100,14 +99,15 @@ int main(int argc, char *argv[])
             QTextStream in(&objfile);
             QString line = "0";
             QVector<Point3D> vertices;
+            QVector<QVector<int>> frameLines;
             QVector<QVector<int>> faces;
             int vertex_counter = 0;
-            int faces_counter = 0;
+            int frameLine_counter = 0;
+            int face_counter = 0;
             while (!in.atEnd())
             {
                 line = in.readLine();
                 QStringList parts = line.split(" ");
-                // add parts.first() == "f" later
                 if (parts.first() == "v")
                 {
                     vertex_counter++;
@@ -117,21 +117,28 @@ int main(int argc, char *argv[])
                     vertex.z = parts[3].toDouble();
                     vertices.push_back(vertex);
                 }
+                else if (parts.first() == "l")
+                {
+                    frameLine_counter++;
+                    QList<int> frameLineList;
+                    frameLineList << parts[1].toInt();
+                    frameLineList << parts[2].toInt();
+                    frameLines.push_back(frameLineList);
+                }
                 else if (parts.first() == "f")
                 {
-                    faces_counter++;
+                    face_counter++;
                     QList<int> face_triangleList;
                     face_triangleList << parts[1].toInt();
                     face_triangleList << parts[2].toInt();
                     face_triangleList << parts[3].toInt();
                     faces.push_back(face_triangleList);
-                    // use faces vector of vectors and populate it
-
                 }
             }
             objfile.close();
             qDebug() << vertex_counter << "vertices";
-            qDebug() << faces_counter << "polygons";
+            qDebug() << frameLine_counter << "frame lines";
+            qDebug() << face_counter << "polygons\n";
             qDebug() << "Vertices:";
             for (int i = 0; i < vertices.size(); ++i)
             {
@@ -140,6 +147,22 @@ int main(int argc, char *argv[])
                          << vertices[i].y << ", "
                          << vertices[i].z << ")\n";
             }
+
+            qDebug() << "Frame lines:";
+            for (int i = 0; i < frameLines.size(); ++i)
+            {
+                QDebug dbg(QtDebugMsg);
+                dbg.nospace();
+                dbg << "(";
+                for (int j = 0; j < frameLines[i].size(); ++j)
+                {
+                    dbg << frameLines[i][j];
+                    if (j < frameLines[i].size() - 1)
+                        dbg << ", ";
+                }
+                dbg << ")\n";
+            }
+
             qDebug() << "Polygons:";
             for (int i = 0; i < faces.size(); ++i)
             {
