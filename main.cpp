@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
             qDebug() << "Cube [1]";
             QString model_type = "0";
             model_type = cin.readLine();
-            qDebug() << model_type << " was chosen";
 
             qDebug() << "Write an object name:";
             QString model_name = "0";
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
                 if (objFile.open(QIODevice::WriteOnly))
                 {
                     QTextStream out(&objFile);
-                    out << "o Cube\n";
+                    out << "o " << model_name << "\n";
                     // writing loop in a file, need to add "f" (polygons) writing and "l" (lines)
                     for (int i = 0; i < cube_vertices.size(); ++i)
                     {
@@ -121,21 +120,40 @@ int main(int argc, char *argv[])
                 else if (parts.first() == "f")
                 {
                     faces_counter++;
+                    QList<int> face_triangleList;
+                    face_triangleList << parts[1].toInt();
+                    face_triangleList << parts[2].toInt();
+                    face_triangleList << parts[3].toInt();
+                    faces.push_back(face_triangleList);
                     // use faces vector of vectors and populate it
+
                 }
             }
             objfile.close();
             qDebug() << vertex_counter << "vertices";
             qDebug() << faces_counter << "polygons";
             qDebug() << "Vertices:";
-            for (int i = 0; i < vertices.size(); ++i) {
-                qDebug() << "("
-                         << vertices[i].x << ","
-                         << vertices[i].y << ","
+            for (int i = 0; i < vertices.size(); ++i)
+            {
+                qDebug().nospace() << "("
+                         << vertices[i].x << ", "
+                         << vertices[i].y << ", "
                          << vertices[i].z << ")\n";
             }
             qDebug() << "Polygons:";
-            //for (int i = 0; i < )
+            for (int i = 0; i < faces.size(); ++i)
+            {
+                QDebug dbg(QtDebugMsg);
+                dbg.nospace();
+                dbg << "(";
+                for (int j = 0; j < faces[i].size(); ++j)
+                {
+                    dbg << faces[i][j];
+                    if (j < faces[i].size() - 1)
+                        dbg << ", ";
+                }
+                dbg << ")\n";
+            }
             break;
         }
         case 3:
