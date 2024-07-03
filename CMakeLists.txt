@@ -17,6 +17,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 add_executable(Proto_processor_OBJ
   main.cpp
   Header.h
+  objwriter.h objwriter.cpp
+  objreader.h objreader.cpp
+  Header.cpp
 )
 target_link_libraries(Proto_processor_OBJ Qt${QT_VERSION_MAJOR}::Core)
 
