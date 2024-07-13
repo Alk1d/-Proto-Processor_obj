@@ -15,11 +15,11 @@ bool ObjReader::ReadFile( const QString& filepath )
 
   if ( !file.open( QIODevice::ReadOnly ) )
   {
-    cout << "Error: Could not open file:" << filepath << Qt::endl;
+    cout << "Error: Could not open file: " << filepath << Qt::endl;
     return false;
   }
 
-  QTextStream in( &file );
+  QTextStream in( & file );
 
   while ( !in.atEnd() )
   {
@@ -55,6 +55,7 @@ bool ObjReader::ReadFile( const QString& filepath )
   file.close();
   return true;
 }
+
 int ObjReader::GetVertexCount()
 {
   return m_vertices.size();

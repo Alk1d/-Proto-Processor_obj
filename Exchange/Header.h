@@ -8,7 +8,3 @@ struct Point3D
   double y;
   double z;
 };
-
-extern QVector<QVector<int>> cube_lines;
-
-extern QVector<QVector<int>> cube_faces;

@@ -14,7 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 add_library(${PROJECT_NAME} OBJECT
   main.cpp
-  Header.h Header.cpp
+  Header.h
   ObjWriter.h ObjWriter.cpp
   ObjReader.h ObjReader.cpp
 )

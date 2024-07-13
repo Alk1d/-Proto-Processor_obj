@@ -22,36 +22,12 @@ int main( int argc, char* argv[] )
       case 1:
       {
         ObjWriter w( "file.obj" );
-        w.SetModelType( "Cube" );
-        int writingMode = w.SelectWritingMode();
-
-        switch ( writingMode ) // select auto or manual writing or return
-        {
-          case 1: // auto generate
-          {
-            w.GenerateCubeModel();
-            break;
-          }
-
-          case 2: // manual writing
-          {
-            w.AddVertex( 0.0, 0.0, 0.0 );
-            w.AddVertex( 10.0, 0.0, 0.0 );
-            w.AddVertex( 5.0, 10.0, 0.0 );
-            w.AddLine( 1, 2 );
-            w.AddFace( 1, 2, 3 );
-            break;
-          }
-
-          case 3: // return
-          {
-            break;
-          }
-
-          default:
-            cout << "Invalid choice!" << Qt::endl;
-        }
-
+        w.SetModelName(); // user-input of the file and model name
+        w.AddVertex( 0.0, 0.0, 0.0 );
+        w.AddVertex( 10.0, 0.0, 0.0 );
+        w.AddVertex( 5.0, 10.0, 0.0 );
+        w.AddLine( 1, 2 );
+        w.AddFace( 1, 2, 3 );
         break;
       }
 
@@ -69,27 +45,27 @@ int main( int argc, char* argv[] )
           int framesCount = r.GetFrameLinesCount();
           int facesCount = r.GetFacesCount();
 
-          cout << "Vertices:" << pointsCount << Qt::endl;
+          cout << "Vertices: " << pointsCount << Qt::endl;
 
           for ( int i = 0; i < pointsCount; ++i )
           {
             Point3D point = r.GetVertexPoint( i );
             // Doing i+1 because counting starts from 0 in vector, but in .obj it starts with 1
-            cout << "Vertex" << i + 1 << ":" << point.x << point.y << point.z << Qt::endl;
+            cout << "Vertex " << i + 1 << ": " << point.x << " " << point.y << " " << point.z << Qt::endl;
           }
 
-          cout << "\n3Frames:" << framesCount << Qt::endl;
+          cout << "\nFrames: " << framesCount << Qt::endl;
 
           for ( int i = 0; i < framesCount; ++i )
           {
             QVector<int> frame = r.GetFrameLine( i );
-            cout << "Frame " << i + 1 << ": " << Qt::endl;
+            cout << "Frame " << i + 1 << ": ";
 
             for ( int j = 0; j < frame.size(); ++j )
-              cout << frame[j] << " " << Qt::endl;
+              cout << frame[j] << " ";
           }
 
-          cout << "\nFaces:" << facesCount << Qt::endl;
+          cout << "\nFaces: " << facesCount << Qt::endl;
 
           for ( int i = 0; i < facesCount; ++i )
           {
@@ -97,10 +73,11 @@ int main( int argc, char* argv[] )
             cout << "Face " << i + 1 << ": ";
 
             for ( int j = 0; j < face.size(); ++j )
-              cout << face[j] << " " << Qt::endl;
+              cout << face[j] << " ";
           }
         }
 
+        cout << Qt::endl;
         break;
       }
 
